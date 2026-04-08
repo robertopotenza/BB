@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Balanced Body® Dashboard Admin</title>
+  <style>
+    :root {
+      --bb-navy: #0c213c;
+      --bb-green: #bdcc2a;
+      --bb-sage: #627884;
+      --bb-light-gray: #d8d9db;
+      --bb-text: #404040;
+      --panel: rgba(18, 42, 71, 0.94);
+      --panel-border: rgba(216, 217, 219, 0.14);
+      --input-bg: rgba(255, 255, 255, 0.06);
+      --font-stack: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      font-family: var(--font-stack);
+      background:
+        radial-gradient(circle at top, rgba(189, 204, 42, 0.15), transparent 30%),
+        linear-gradient(180deg, #102847 0%, var(--bb-navy) 100%);
+      color: var(--bb-light-gray);
+    }
+
+    body {
+      padding: 28px;
+    }
+
+    .page {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      gap: 22px;
+    }
+
+    .hero,
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 22px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.24);
+    }
+
+    .hero {
+      padding: 28px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .eyebrow {
+      color: var(--bb-sage);
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 0.82rem;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 500;
+    }
+
+    .hero p,
+    .hint,
+    .status,
+    .publish-steps,
+    .json-note {
+      margin: 0;
+      line-height: 1.65;
+      color: rgba(216, 217, 219, 0.86);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(360px, 480px) minmax(0, 1fr);
+      gap: 22px;
+    }
+
+    .panel {
+      padding: 24px;
+    }
+
+    .panel h2 {
+      margin: 0 0 16px;
+      font-size: 1.35rem;
+      font-weight: 500;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    label {
+      display: grid;
+      gap: 8px;
+      font-weight: 600;
+      color: var(--bb-light-gray);
+    }
+
+    .label-note {
+      font-weight: 400;
+      font-size: 0.92rem;
+      color: rgba(216, 217, 219, 0.7);
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border: 1px solid rgba(216, 217, 219, 0.16);
+      border-radius: 14px;
+      background: var(--input-bg);
+      color: var(--bb-light-gray);
+      padding: 14px 16px;
+      font: inherit;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: 2px solid rgba(189, 204, 42, 0.45);
+      border-color: rgba(189, 204, 42, 0.45);
+    }
+
+    textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    button,
+    .button-link {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 48px;
+      padding: 12px 16px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font: inherit;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 120ms ease, opacity 120ms ease, border-color 120ms ease;
+    }
+
+    button:hover,
+    .button-link:hover {
+      transform: translateY(-1px);
+    }
+
+    .button-primary {
+      background: var(--bb-green);
+      color: var(--bb-text);
+    }
+
+    .button-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(216, 217, 219, 0.16);
+      color: var(--bb-light-gray);
+    }
+
+    .button-wide {
+      grid-column: 1 / -1;
+    }
+
+    .status {
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(216, 217, 219, 0.1);
+    }
+
+    .status strong {
+      color: var(--bb-green);
+    }
+
+    .preview-frame {
+      width: 100%;
+      min-height: 640px;
+      border: 0;
+      border-radius: 18px;
+      background: #091729;
+      box-shadow: inset 0 0 0 1px rgba(216, 217, 219, 0.08);
+    }
+
+    .json-box {
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 16px;
+      background: rgba(7, 16, 30, 0.72);
+      border: 1px solid rgba(216, 217, 219, 0.08);
+      overflow: auto;
+      max-height: 280px;
+    }
+
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #eef5af;
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    .top-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .publish-steps {
+      margin-top: 14px;
+    }
+
+    @media (max-width: 980px) {
+      body {
+        padding: 16px;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .button-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="eyebrow">Balanced Body® Dashboard Admin</div>
+      <h1>Update the streak number and bottom sentence</h1>
+      <p>This page is the easiest control panel for the live stockout board. You can type a new streak number, change the bottom message, preview the result, and then publish the update to the live website.</p>
+      <div class="top-links">
+        <a class="button-link button-secondary" href="./direct-dashboard.html" target="_blank" rel="noopener noreferrer">Open Live Dashboard</a>
+        <a id="githubEditLinkTop" class="button-link button-secondary" href="https://github.com/robertopotenza/BB/edit/main/stockout-state.json" target="_blank" rel="noopener noreferrer">Open GitHub Editor</a>
+      </div>
+    </section>
+
+    <section class="layout">
+      <div class="panel">
+        <h2>Admin Controls</h2>
+        <div class="form-grid">
+          <label>
+            Current streak number
+            <span class="label-note">Enter the exact number you want shown in the ring.</span>
+            <input id="daysInput" type="number" min="0" step="1" />
+          </label>
+
+          <label>
+            Bottom sentence
+            <span class="label-note">This is the motivational line shown across the bottom bar.</span>
+            <textarea id="messageInput"></textarea>
+          </label>
+
+          <label>
+            Ring goal
+            <span class="label-note">This controls when the ring reaches a full circle. Leave 100 unless you want a different scale.</span>
+            <input id="maxDaysInput" type="number" min="1" step="1" />
+          </label>
+
+          <div class="button-grid">
+            <button id="previewButton" class="button-primary" type="button">Preview on Dashboard</button>
+            <button id="copyButton" class="button-secondary" type="button">Copy Update JSON</button>
+            <button id="downloadButton" class="button-secondary" type="button">Download JSON File</button>
+            <a id="githubEditLink" class="button-link button-secondary" href="https://github.com/robertopotenza/BB/edit/main/stockout-state.json" target="_blank" rel="noopener noreferrer">Publish in GitHub</a>
+            <button id="resetButton" class="button-secondary button-wide" type="button">Reload Current Live Values</button>
+          </div>
+
+          <p id="statusText" class="status">The editor is loading the current live values now.</p>
+
+          <div>
+            <h2>Generated JSON</h2>
+            <p class="json-note">When you click <strong>Publish in GitHub</strong>, replace the file contents with the JSON shown below and commit the change. GitHub Pages will republish the live site automatically.</p>
+            <div class="json-box">
+              <pre id="jsonPreview"></pre>
+            </div>
+          </div>
+
+          <p class="publish-steps">Publishing is designed to stay simple. First, change the streak and sentence here. Second, click <strong>Copy Update JSON</strong> or <strong>Download JSON File</strong>. Third, click <strong>Publish in GitHub</strong>, paste the new JSON into `stockout-state.json`, and commit. A minute later, the live dashboard updates everywhere.</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Live Preview</h2>
+        <p class="hint">The preview button opens the dashboard with your temporary admin values so you can check the look before publishing the update to the live site.</p>
+        <iframe id="previewFrame" class="preview-frame" src="./direct-dashboard.html?preview=1" title="Dashboard preview"></iframe>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const STORAGE_KEY = 'bbStockoutPreviewState';
+    const FALLBACK_STATE = {
+      mode: 'manual',
+      days: 42,
+      maxDays: 100,
+      message: 'Disciplined planning keeps the floor moving and customers supported.',
+      updatedAt: '2026-04-08T00:00:00Z'
+    };
+
+    const daysInput = document.getElementById('daysInput');
+    const messageInput = document.getElementById('messageInput');
+    const maxDaysInput = document.getElementById('maxDaysInput');
+    const statusText = document.getElementById('statusText');
+    const jsonPreview = document.getElementById('jsonPreview');
+    const previewFrame = document.getElementById('previewFrame');
+    const previewButton = document.getElementById('previewButton');
+    const copyButton = document.getElementById('copyButton');
+    const downloadButton = document.getElementById('downloadButton');
+    const resetButton = document.getElementById('resetButton');
+
+    function getPayload() {
+      const days = Math.max(0, Math.floor(Number(daysInput.value || 0)));
+      const maxDays = Math.max(1, Math.floor(Number(maxDaysInput.value || 100)));
+      const message = String(messageInput.value || '').trim() || FALLBACK_STATE.message;
+
+      return {
+        mode: 'manual',
+        days,
+        maxDays,
+        message,
+        updatedAt: new Date().toISOString()
+      };
+    }
+
+    function renderJsonPreview() {
+      const payload = getPayload();
+      jsonPreview.textContent = JSON.stringify(payload, null, 2);
+      return payload;
+    }
+
+    function fillForm(payload) {
+      daysInput.value = String(payload.days ?? 0);
+      maxDaysInput.value = String(payload.maxDays ?? 100);
+      messageInput.value = payload.message ?? FALLBACK_STATE.message;
+      renderJsonPreview();
+    }
+
+    function savePreviewState() {
+      const payload = renderJsonPreview();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      previewFrame.src = './direct-dashboard.html?preview=1&t=' + Date.now();
+      statusText.innerHTML = 'Preview updated. <strong>Your live site has not changed yet.</strong> Use <strong>Publish in GitHub</strong> when you are happy with the result.';
+      return payload;
+    }
+
+    async function copyJson() {
+      const payload = renderJsonPreview();
+      const text = JSON.stringify(payload, null, 2);
+      await navigator.clipboard.writeText(text);
+      statusText.innerHTML = 'The new JSON has been copied. Next, open <strong>Publish in GitHub</strong>, replace the file content, and commit.';
+    }
+
+    function downloadJson() {
+      const payload = renderJsonPreview();
+      const blob = new Blob([JSON.stringify(payload, null, 2) + '\n'], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'stockout-state.json';
+      link.click();
+      URL.revokeObjectURL(url);
+      statusText.innerHTML = 'The JSON file has been downloaded. You can upload or paste it into GitHub to publish the update.';
+    }
+
+    async function loadLiveState() {
+      statusText.textContent = 'Loading the current live dashboard values...';
+
+      try {
+        const response = await fetch('./stockout-state.json', { cache: 'no-store' });
+        if (!response.ok) {
+          throw new Error('Could not load live values');
+        }
+
+        const payload = await response.json();
+        fillForm(payload);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+        previewFrame.src = './direct-dashboard.html?preview=1&t=' + Date.now();
+        statusText.textContent = 'Current live values loaded. You can edit them now.';
+      } catch (error) {
+        fillForm(FALLBACK_STATE);
+        statusText.textContent = 'Live values could not be loaded, so fallback values were inserted instead.';
+      }
+    }
+
+    [daysInput, messageInput, maxDaysInput].forEach((element) => {
+      element.addEventListener('input', renderJsonPreview);
+    });
+
+    previewButton.addEventListener('click', savePreviewState);
+    copyButton.addEventListener('click', () => {
+      copyJson().catch(() => {
+        statusText.textContent = 'Copy failed in this browser. Please use the downloaded JSON file instead.';
+      });
+    });
+    downloadButton.addEventListener('click', downloadJson);
+    resetButton.addEventListener('click', loadLiveState);
+
+    renderJsonPreview();
+    loadLiveState();
+  </script>
+</body>
+</html>

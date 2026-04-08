@@ -460,7 +460,31 @@
       }, 1100);
     }
 
+    function getPreviewState() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        if (!params.has('preview')) {
+          return null;
+        }
+
+        const raw = window.localStorage.getItem('bbStockoutPreviewState');
+        if (!raw) {
+          return null;
+        }
+
+        return JSON.parse(raw);
+      } catch (error) {
+        return null;
+      }
+    }
+
     async function fetchState() {
+      const previewState = getPreviewState();
+      if (previewState) {
+        render(previewState, state.days);
+        return;
+      }
+
       const sources = ['/api/state', './stockout-state.json'];
 
       for (const source of sources) {
@@ -489,7 +513,7 @@
     }
 
     handleLogoFallback();
-    render(LOCAL_STATE, 0);
+    render(getPreviewState() || LOCAL_STATE, 0);
     fetchState();
     window.setInterval(fetchState, 4000);
   </script>
