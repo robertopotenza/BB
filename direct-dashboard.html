@@ -7,14 +7,20 @@
   <style>
     :root {
       --bb-navy: #0c213c;
+      --bb-navy-deep: #091729;
+      --bb-blue: #102847;
       --bb-green: #bdcc2a;
       --bb-sage: #627884;
       --bb-light-gray: #d8d9db;
+      --bb-white: #f4f6f7;
       --bb-text: #404040;
-      --ring-track: rgba(216, 217, 219, 0.16);
-      --ring-shadow: rgba(189, 204, 42, 0.25);
+      --panel-bg: rgba(8, 25, 47, 0.28);
+      --panel-border: rgba(216, 217, 219, 0.12);
+      --panel-shadow: rgba(0, 0, 0, 0.18);
+      --ring-track: rgba(216, 217, 219, 0.18);
+      --ring-shadow: rgba(189, 204, 42, 0.24);
       --glow-green: rgba(189, 204, 42, 0.18);
-      --glow-sage: rgba(98, 120, 132, 0.18);
+      --glow-sage: rgba(98, 120, 132, 0.2);
       --border-soft: rgba(216, 217, 219, 0.18);
       --font-stack: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     }
@@ -27,28 +33,56 @@
 
     html,
     body {
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
+      width: 100%;
+      min-height: 100%;
       font-family: var(--font-stack);
       background:
-        radial-gradient(circle at 50% 38%, var(--glow-green) 0%, rgba(189, 204, 42, 0.08) 18%, transparent 40%),
-        radial-gradient(circle at 76% 18%, var(--glow-sage) 0%, transparent 28%),
-        linear-gradient(180deg, #102847 0%, var(--bb-navy) 55%, #091729 100%);
+        radial-gradient(circle at 50% 42%, var(--glow-green) 0%, rgba(189, 204, 42, 0.08) 18%, transparent 42%),
+        radial-gradient(circle at 76% 18%, var(--glow-sage) 0%, transparent 30%),
+        linear-gradient(180deg, var(--bb-blue) 0%, var(--bb-navy) 56%, var(--bb-navy-deep) 100%);
       color: var(--bb-light-gray);
     }
 
     body {
       position: relative;
+      overflow: hidden;
+    }
+
+    .live-indicator {
+      position: absolute;
+      top: 2.5vh;
+      right: 2.4vw;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.45rem 0.8rem;
+      border: 1px solid rgba(189, 204, 42, 0.2);
+      border-radius: 999px;
+      background: rgba(12, 33, 60, 0.35);
+      backdrop-filter: blur(8px);
+      color: var(--bb-light-gray);
+      font-size: 0.82rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      z-index: 5;
+    }
+
+    .live-dot {
+      width: 0.7rem;
+      height: 0.7rem;
+      border-radius: 50%;
+      background: var(--bb-green);
+      box-shadow: 0 0 0 0 rgba(189, 204, 42, 0.75);
+      animation: pulse 1.8s infinite;
+      flex: 0 0 auto;
     }
 
     .board {
       position: relative;
-      width: 100vw;
-      height: 100vh;
+      min-height: 100vh;
       display: grid;
       grid-template-rows: auto 1fr auto;
-      padding: 2.2vh 3vw 2vh;
+      padding: 2.2vh 2.2vw 2vh;
     }
 
     .topbar {
@@ -57,6 +91,7 @@
       justify-content: space-between;
       gap: 2rem;
       min-height: 12vh;
+      padding-right: 5.8rem;
     }
 
     .logo-pill {
@@ -89,7 +124,7 @@
     }
 
     .department {
-      font-size: clamp(1rem, 1.75vw, 1.45rem);
+      font-size: clamp(0.95rem, 1.65vw, 1.38rem);
       letter-spacing: 0.22em;
       font-weight: 500;
       color: var(--bb-sage);
@@ -97,33 +132,53 @@
       text-transform: uppercase;
     }
 
-    .live-indicator {
-      position: absolute;
-      top: 2.5vh;
-      right: 2.4vw;
-      display: inline-flex;
+    .main-grid {
+      display: grid;
+      grid-template-columns: minmax(250px, 1fr) minmax(420px, 1.25fr) minmax(280px, 1fr);
       align-items: center;
-      gap: 0.55rem;
-      padding: 0.45rem 0.8rem;
-      border: 1px solid rgba(189, 204, 42, 0.2);
-      border-radius: 999px;
-      background: rgba(12, 33, 60, 0.35);
-      backdrop-filter: blur(8px);
-      color: var(--bb-light-gray);
-      font-size: 0.82rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      z-index: 5;
+      gap: 2.2vw;
+      padding: 1vh 0 2vh;
     }
 
-    .live-dot {
-      width: 0.7rem;
-      height: 0.7rem;
-      border-radius: 50%;
-      background: var(--bb-green);
-      box-shadow: 0 0 0 0 rgba(189, 204, 42, 0.75);
-      animation: pulse 1.8s infinite;
-      flex: 0 0 auto;
+    .side-panel {
+      align-self: center;
+      min-height: 34vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 1.5rem 1.65rem;
+      border: 1px solid var(--panel-border);
+      border-radius: 2rem;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), var(--panel-bg));
+      box-shadow: 0 20px 42px var(--panel-shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    .side-panel.right {
+      text-align: left;
+    }
+
+    .panel-label {
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(216, 217, 219, 0.56);
+      margin-bottom: 0.9rem;
+    }
+
+    .panel-title {
+      font-size: clamp(1.15rem, 1.75vw, 1.7rem);
+      line-height: 1.2;
+      color: var(--bb-white);
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+
+    .panel-copy {
+      font-size: clamp(1rem, 1.3vw, 1.35rem);
+      line-height: 1.45;
+      color: rgba(244, 246, 247, 0.94);
+      white-space: pre-wrap;
     }
 
     .center-stage {
@@ -141,6 +196,7 @@
       justify-content: center;
       gap: 1.3rem;
       transform-origin: center center;
+      width: 100%;
     }
 
     .counter-wrap.bump {
@@ -149,7 +205,7 @@
 
     .ring-shell {
       position: relative;
-      width: min(52vw, 580px);
+      width: min(46vw, 560px);
       aspect-ratio: 1 / 1;
       display: grid;
       place-items: center;
@@ -191,7 +247,7 @@
 
     .days-number {
       position: relative;
-      font-size: clamp(7rem, 14vw, 160px);
+      font-size: clamp(6.6rem, 13vw, 160px);
       line-height: 0.92;
       font-weight: 200;
       letter-spacing: -0.06em;
@@ -201,24 +257,24 @@
       text-align: center;
     }
 
+    .subnote {
+      font-size: clamp(0.82rem, 1.2vw, 1rem);
+      color: rgba(216, 217, 219, 0.64);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
     .days-caption {
-      font-size: clamp(1.2rem, 2.35vw, 2rem);
+      font-size: clamp(1.45rem, 2.3vw, 2.25rem);
       color: var(--bb-light-gray);
       font-weight: 400;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.01em;
       text-align: center;
     }
 
     .days-caption strong {
       color: var(--bb-green);
       font-weight: 600;
-    }
-
-    .subnote {
-      font-size: clamp(0.82rem, 1.25vw, 1rem);
-      color: rgba(216, 217, 219, 0.64);
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
     }
 
     .sparkles {
@@ -296,14 +352,61 @@
       }
     }
 
-    @media (max-aspect-ratio: 16/9) {
-      .ring-shell {
-        width: min(68vh, 74vw);
+    @media (max-width: 1200px) {
+      body {
+        overflow: auto;
       }
 
-      .topbar,
+      .board {
+        min-height: 100vh;
+      }
+
+      .main-grid {
+        grid-template-columns: 1fr;
+        gap: 1.6rem;
+      }
+
+      .side-panel {
+        min-height: auto;
+      }
+
+      .ring-shell {
+        width: min(70vw, 540px);
+      }
+    }
+
+    @media (max-width: 720px) {
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-right: 0;
+      }
+
+      .department {
+        text-align: left;
+      }
+
+      .live-indicator {
+        top: 1rem;
+        right: 1rem;
+      }
+
+      .logo-pill {
+        min-width: 13rem;
+        min-height: 4rem;
+      }
+
+      .ring-shell {
+        width: min(86vw, 480px);
+      }
+
+      .days-caption {
+        max-width: 14ch;
+      }
+
       .bottombar {
-        min-height: 11vh;
+        padding-left: 0;
+        padding-right: 0;
       }
     }
   </style>
@@ -323,23 +426,39 @@
       <div class="department">Procurement &amp; Supply Chain</div>
     </header>
 
-    <section class="center-stage">
-      <div id="counterWrap" class="counter-wrap">
-        <div class="ring-shell">
-          <svg viewBox="0 0 360 360" aria-hidden="true">
-            <circle class="ring-track" cx="180" cy="180" r="158"></circle>
-            <circle id="ringProgress" class="ring-progress" cx="180" cy="180" r="158"></circle>
-          </svg>
+    <section class="main-grid">
+      <aside class="side-panel left">
+        <div class="panel-label">Latest event</div>
+        <h2 class="panel-title">Last stockout event</h2>
+        <div id="lastStockoutEventText" class="panel-copy">No stockout event details have been entered yet.</div>
+      </aside>
 
-          <div class="count-panel">
-            <div id="daysNumber" class="days-number">0</div>
-            <div id="sparkles" class="sparkles"></div>
-            <div class="subnote">Current Streak</div>
+      <section class="center-stage">
+        <div id="counterWrap" class="counter-wrap">
+          <div class="ring-shell">
+            <svg viewBox="0 0 360 360" aria-hidden="true">
+              <circle class="ring-track" cx="180" cy="180" r="158"></circle>
+              <circle id="ringProgress" class="ring-progress" cx="180" cy="180" r="158"></circle>
+            </svg>
+
+            <div class="count-panel">
+              <div id="daysNumber" class="days-number">0</div>
+              <div id="sparkles" class="sparkles"></div>
+              <div class="subnote">Current Streak</div>
+            </div>
           </div>
-        </div>
 
-        <div class="days-caption">Consecutive Days <strong>Without Stockout</strong></div>
-      </div>
+          <div class="days-caption">Consecutive Days <strong>Without Stockout</strong></div>
+        </div>
+      </section>
+
+      <aside class="side-panel right">
+        <div class="panel-label">Milestones</div>
+        <h2 class="panel-title">Rewards as the streak grows</h2>
+        <div id="milestoneMessageText" class="panel-copy">When we hit 2 weeks, Marco will buy a premium lunch for the team.
+At 3 weeks, Roberto will treat everyone to a Brazilian dinner.
+And when we reach 4 weeks, Ken will give you something very special!</div>
+      </aside>
     </section>
 
     <footer class="bottombar">
@@ -354,6 +473,8 @@
       days: 42,
       maxDays: 100,
       message: 'Disciplined planning keeps the floor moving and customers supported.',
+      lastStockoutEvent: 'No stockout event details have been entered yet.',
+      milestoneMessage: 'When we hit 2 weeks, Marco will buy a premium lunch for the team.\nAt 3 weeks, Roberto will treat everyone to a Brazilian dinner.\nAnd when we reach 4 weeks, Ken will give you something very special!',
       updatedAt: '2026-04-08T00:00:00Z'
     };
 
@@ -361,11 +482,15 @@
       days: 0,
       maxDays: 100,
       message: '',
+      lastStockoutEvent: '',
+      milestoneMessage: '',
       updatedAt: null
     };
 
     const daysNumberEl = document.getElementById('daysNumber');
     const messageEl = document.getElementById('messageText');
+    const lastStockoutEventEl = document.getElementById('lastStockoutEventText');
+    const milestoneMessageEl = document.getElementById('milestoneMessageText');
     const ringProgressEl = document.getElementById('ringProgress');
     const counterWrapEl = document.getElementById('counterWrap');
     const sparklesEl = document.getElementById('sparkles');
@@ -393,6 +518,11 @@
       return Math.max(0, Math.floor((today - start) / millisecondsPerDay));
     }
 
+    function ensureText(value, fallback) {
+      const text = typeof value === 'string' ? value.trim() : '';
+      return text.length > 0 ? text : fallback;
+    }
+
     function normalizePayload(payload) {
       const mode = payload?.mode === 'manual' ? 'manual' : 'auto';
       const startDate = typeof payload?.streakStartDate === 'string' ? payload.streakStartDate : null;
@@ -400,13 +530,17 @@
       const derivedDays = mode === 'auto' ? calculateDaysFromDate(startDate) : null;
       const days = derivedDays ?? (Number.isFinite(manualDays) ? Math.max(0, Math.floor(manualDays)) : 0);
       const maxDays = Math.max(1, Number(payload?.maxDays ?? 100));
-      const message = String(payload?.message ?? LOCAL_STATE.message);
+      const message = ensureText(payload?.message, LOCAL_STATE.message);
+      const lastStockoutEvent = ensureText(payload?.lastStockoutEvent, LOCAL_STATE.lastStockoutEvent);
+      const milestoneMessage = ensureText(payload?.milestoneMessage, LOCAL_STATE.milestoneMessage);
       const updatedAt = payload?.updatedAt ?? null;
 
       return {
         days,
         maxDays: Number.isFinite(maxDays) ? Math.floor(maxDays) : 100,
         message,
+        lastStockoutEvent,
+        milestoneMessage,
         updatedAt
       };
     }
@@ -418,6 +552,8 @@
 
       daysNumberEl.textContent = String(next.days);
       messageEl.textContent = next.message;
+      lastStockoutEventEl.textContent = next.lastStockoutEvent;
+      milestoneMessageEl.textContent = next.milestoneMessage;
       ringProgressEl.style.strokeDashoffset = String(dashOffset);
 
       if (next.days > previousDays) {
