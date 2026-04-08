@@ -3,7 +3,7 @@
   "days": 5,
   "maxDays": 100,
   "message": "WE  ARE  ALL  ONE !",
-  "lastStockoutEvent": "Order SO#1645945 has been placed on hold due to missing walnut wood as of 04/03.",
+  "lastStockoutEvent": "Order SO#1645945 was placed on hold on 04/03 due to missing walnut wood.",
   "milestoneMessage": ".",
-  "updatedAt": "2026-04-08T23:52:10.310Z"
+  "updatedAt": "2026-04-08T23:56:31.285Z"
 }
