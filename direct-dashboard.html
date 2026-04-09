@@ -53,10 +53,12 @@
       position: relative;
       width: 100vw;
       height: 100vh;
-      padding: 4vh 4vw;
+      padding: 2.4vh 2.8vw;
       box-sizing: border-box;
-      transform: scale(0.88);
-      transform-origin: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
     }
 
     .live-indicator {
@@ -90,20 +92,22 @@
 
     .board {
       position: relative;
-      min-height: 100%;
-      height: 100%;
+      width: min(100%, 1760px);
+      height: min(100%, 960px);
+      min-height: 0;
       display: grid;
       grid-template-rows: auto 1fr auto;
-      padding: 2.2vh 2.2vw 2vh;
+      padding: 1.6vh 1.8vw 1.4vh;
+      margin: 0 auto;
     }
 
     .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 2rem;
-      min-height: 12vh;
-      padding-right: 5.8rem;
+      gap: 1.5rem;
+      min-height: 9.2vh;
+      padding-right: 5rem;
     }
 
     .logo-pill {
@@ -146,15 +150,15 @@
 
     .main-grid {
       display: grid;
-      grid-template-columns: minmax(250px, 0.96fr) minmax(500px, 1.42fr) minmax(220px, 0.78fr);
+      grid-template-columns: minmax(235px, 0.94fr) minmax(460px, 1.4fr) minmax(210px, 0.72fr);
       align-items: center;
-      gap: 1.7vw;
-      padding: 1vh 0 2vh;
+      gap: 1.25vw;
+      padding: 0.4vh 0 1vh;
     }
 
     .side-panel {
       align-self: center;
-      min-height: 34vh;
+      min-height: 29vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -168,9 +172,9 @@
 
     .side-panel.right {
       text-align: left;
-      max-width: 15.5rem;
+      max-width: 14.25rem;
       justify-self: end;
-      padding: 1.15rem 1rem;
+      padding: 0.95rem 0.9rem;
     }
 
     .panel-label {
@@ -275,7 +279,7 @@
       position: relative;
       display: grid;
       place-items: center;
-      padding: 0 0 3vh;
+      padding: 0 0 1.2vh;
     }
 
     .counter-wrap {
@@ -295,11 +299,11 @@
 
     .ring-shell {
       position: relative;
-      width: min(46vw, 560px);
+      width: min(41vw, 500px);
       aspect-ratio: 1 / 1;
       display: grid;
       place-items: center;
-      filter: drop-shadow(0 0 34px var(--ring-shadow));
+      filter: drop-shadow(0 0 28px var(--ring-shadow));
     }
 
     svg {
@@ -337,7 +341,7 @@
 
     .days-number {
       position: relative;
-      font-size: clamp(6.6rem, 13vw, 160px);
+      font-size: clamp(5.8rem, 11.4vw, 142px);
       line-height: 0.92;
       font-weight: 200;
       letter-spacing: -0.06em;
@@ -355,7 +359,7 @@
     }
 
     .days-caption {
-      font-size: clamp(1.45rem, 2.3vw, 2.25rem);
+      font-size: clamp(1.24rem, 1.95vw, 1.95rem);
       color: var(--bb-light-gray);
       font-weight: 400;
       letter-spacing: 0.01em;
@@ -388,7 +392,7 @@
     }
 
     .bottombar {
-      min-height: 12vh;
+      min-height: 9.5vh;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -398,7 +402,7 @@
     }
 
     .message {
-      font-size: clamp(1.05rem, 1.65vw, 1.45rem);
+      font-size: clamp(0.98rem, 1.35vw, 1.2rem);
       font-style: italic;
       font-weight: 400;
       color: rgba(216, 217, 219, 0.82);
