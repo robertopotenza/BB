@@ -1,9 +1,9 @@
 {
   "mode": "manual",
-  "days": 6,
+  "days": 0,
   "maxDays": 100,
   "message": "WE  ARE  ALL  ONE !",
-  "lastStockoutEvent": "Order SO#1645945 was placed on hold on 04/03 due to missing walnut wood.",
+  "lastStockoutEvent": "14945 (Shoulder Bracket Left) 4/9/2026\n11157 (Spring Handle) 4/9/2026",
   "milestoneMessage": ".",
-  "updatedAt": "2026-04-09T14:40:28.837Z"
+  "updatedAt": "2026-04-09T16:57:33.996Z"
 }
